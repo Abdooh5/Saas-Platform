@@ -25,7 +25,8 @@ public function register(RegisterUserRequest $request)
         'name' => $request->name,
         'email' => $request->email,
         'password' => Hash::make($request->password),
-        'company_id' => $company->id
+        'company_id' => $company->id,
+        'role' => User::ROLE_ADMIN,
     ]);
 
     $token = $user->createToken('auth-token')->plainTextToken;

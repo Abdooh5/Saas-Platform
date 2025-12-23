@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateProjectRequest;
 use App\Http\Resources\ProjectResource;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
 class ProjectController extends Controller
@@ -135,6 +136,14 @@ public function restore(Request $request, $id)
         'message' => 'Project restored successfully',
         'data' => new ProjectResource($project)
     ]);
+}
+public function trashed()
+{$user=Auth::user();
+    $projects = Project::onlyTrashed()
+        ->where('company_id', $user->company_id)
+        ->get();
+
+    return ProjectResource::collection($projects);
 }
 
 
